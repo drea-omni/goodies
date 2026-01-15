@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni Content Toolkit v2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --omni-navy: #272D6D;
+            --omni-pink: #FF5789;
+            --omni-blue: #00A1FF;
+            --omni-grey: #3F4755;
+            --omni-light-grey: #A3ACB8;
+            --omni-bg: #F8F9FC;
+            --omni-pink-soft: #FFF0F3;
+            --omni-blue-soft: #E6F4FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--omni-bg);
+            color: var(--omni-navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background gradient */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(255, 87, 137, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 161, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(39, 45, 109, 0.03) 0%, transparent 70%);
+            z-index: -1;
+            animation: gradientShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(3deg); }
+        }
+
+        /* Header */
+        header {
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--omni-navy);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--omni-navy);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .version-badge {
+            background: var(--omni-pink);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 900px;
+            margin: 60px auto 0;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--omni-navy) 0%, var(--omni-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--omni-grey);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* Bookmarklet Card */
+        .bookmarklet-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto 60px;
+            box-shadow: 
+                0 4px 6px rgba(39, 45, 109, 0.04),
+                0 20px 60px rgba(39, 45, 109, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bookmarklet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--omni-pink), var(--omni-blue));
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--omni-pink-soft);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .card-title {
+            flex: 1;
+        }
+
+        .card-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .card-title span {
+            font-size: 14px;
+            color: var(--omni-light-grey);
+        }
+
+        /* Drag Button */
+        .drag-zone {
+            background: linear-gradient(135deg, var(--omni-navy) 0%, #3a4280 100%);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .drag-zone::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            pointer-events: none;
+        }
+
+        .drag-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .drag-label svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .bookmarklet-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--omni-pink);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: grab;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(255, 87, 137, 0.4);
+        }
+
+        .bookmarklet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 87, 137, 0.5);
+        }
+
+        .bookmarklet-btn:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+
+        /* Alternative Copy Method */
+        .alt-method {
+            background: var(--omni-bg);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .alt-method-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .alt-method-header span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--omni-grey);
+        }
+
+        .copy-btn {
+            background: var(--omni-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            background: #0090e6;
+        }
+
+        .copy-btn.copied {
+            background: #10B981;
+        }
+
+        .code-preview {
+            background: var(--omni-navy);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            user-select: all;
+        }
+
+        /* Features Grid */
+        .features {
+            max-width: 900px;
+            margin: 0 auto 80px;
+            padding: 0 40px;
+        }
+
+        .features h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--omni-light-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(39, 45, 109, 0.06);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(39, 45, 109, 0.1);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 16px;
+        }
+
+        .feature-card:nth-child(1) .feature-icon { background: var(--omni-pink-soft); }
+        .feature-card:nth-child(2) .feature-icon { background: var(--omni-blue-soft); }
+        .feature-card:nth-child(3) .feature-icon { background: #E6FFF4; }
+        .feature-card:nth-child(4) .feature-icon { background: #FFFBE6; }
+
+        .feature-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--omni-light-grey);
+            line-height: 1.5;
+        }
+
+        /* Instructions */
+        .instructions {
+            max-width: 700px;
+            margin: 0 auto 80px;
+            padding: 0 40px;
+        }
+
+        .instructions h3 {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(39, 45, 109, 0.06);
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: var(--omni-navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: var(--omni-grey);
+            line-height: 1.5;
+        }
+
+        .step-content code {
+            background: var(--omni-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', monospace;
+            font-size: 13px;
+            color: var(--omni-pink);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--omni-light-grey);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--omni-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--omni-navy);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(39, 45, 109, 0.3);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            header {
+                padding: 20px;
+            }
+
+            .hero {
+                margin-top: 40px;
+                padding: 0 20px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .bookmarklet-card {
+                margin: 0 20px 40px;
+                padding: 24px;
+            }
+
+            .drag-zone {
+                padding: 24px;
+            }
+
+            .features, .instructions {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">🧰</div>
+            Omni Toolkit
+        </div>
+        <span class="version-badge">v2.0</span>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Dashboard Migration Made Simple</h1>
+            <p>A powerful bookmarklet for migrating Omni dashboards between models with smart archiving, folder organization, and one-click workflows.</p>
+        </section>
+
+        <section class="bookmarklet-card">
+            <div class="card-header">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">
+                    <h2>Install Bookmarklet</h2>
+                    <span>Drag to your bookmarks bar or copy the code</span>
+                </div>
+            </div>
+
+            <div class="drag-zone">
+                <div class="drag-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7-7 7 7"/>
+                    </svg>
+                    Drag this button to your bookmarks bar
+                </div>
+                <a class="bookmarklet-btn" href="javascript:(function(){const s=document.createElement('style');s.textContent=`@keyframes omniSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.otk-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(39,45,109,0.9);z-index:999999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;backdrop-filter:blur(4px)}.otk-modal{background:%23fff;border-radius:16px;width:90%25;max-width:520px;color:%23272D6D;box-shadow:0 25px 80px rgba(0,0,0,0.4);max-height:90vh;overflow:hidden;display:flex;flex-direction:column}.otk-header{padding:18px 22px;background:%23272D6D;display:flex;justify-content:space-between;align-items:center}.otk-header h2{margin:0;font-size:17px;font-weight:700;color:%23fff}.otk-close{background:none;border:none;color:rgba(255,255,255,0.7);font-size:26px;cursor:pointer}.otk-close:hover{color:%23fff}.otk-body{padding:18px 22px;overflow-y:auto;flex:1}.otk-nav{display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap}.otk-nav button{padding:9px 12px;border-radius:8px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:%23f0f2f5;color:%233F4755;transition:all 0.2s}.otk-nav button:hover:not(.locked):not(.active){background:%23e2e5ea}.otk-nav button.active{background:%23FF5789;color:%23fff}.otk-nav button.locked{background:%233F4755;color:%23A3ACB8;cursor:not-allowed;opacity:0.7}.otk-nav button.auth{background:%2300A1FF;color:%23fff}.otk-panel{display:none}.otk-panel.active{display:block}.otk-label{display:block;color:%233F4755;font-size:12px;font-weight:600;margin-bottom:6px}.otk-input,.otk-select{width:100%25;padding:10px 12px;border-radius:8px;border:2px solid %23e2e5ea;background:%23f8f9fa;color:%23272D6D;font-size:13px;box-sizing:border-box}.otk-input:focus,.otk-select:focus{outline:none;border-color:%23FF5789}.otk-input:disabled,.otk-select:disabled{background:%23e2e5ea;color:%233F4755}.otk-group{margin-bottom:14px}.otk-btn{width:100%25;padding:12px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;box-sizing:border-box}.otk-btn-p{background:%23FF5789;color:%23fff}.otk-btn-p:hover:not(:disabled){background:%23AA3F6B}.otk-btn-p:disabled,.otk-btn-s:disabled{background:%233F4755;color:%23A3ACB8;cursor:not-allowed;opacity:0.6}.otk-btn-d{background:%23fff0f3;color:%23AA3F6B;border:1px solid %23AA3F6B}.otk-btn-d:hover{background:%23AA3F6B;color:%23fff}.otk-btn-s{background:%23f0f2f5;color:%233F4755;border:1px solid %23e2e5ea}.otk-btn-s:hover:not(:disabled){background:%23e2e5ea}.otk-status{padding:10px;border-radius:8px;margin-bottom:14px;font-size:12px;display:none;line-height:1.4}.otk-status.visible{display:block}.otk-status.loading{background:%23e6f4ff;border:1px solid %2300A1FF;color:%23272D6D}.otk-status.success{background:%23e6fff4;border:1px solid %2300A1FF;color:%23272D6D}.otk-status.error{background:%23fff0f3;border:1px solid %23FF5789;color:%23AA3F6B}.otk-status.warning{background:%23fffbe6;border:1px solid %23E8BF43;color:%23272D6D}.otk-spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,161,255,0.3);border-top-color:%2300A1FF;border-radius:50%25;animation:omniSpin 0.8s linear infinite;margin-right:6px;vertical-align:middle}.otk-link{display:inline-block;background:%2300A1FF;color:%23fff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:600;font-size:12px;margin-top:8px}.otk-help{font-size:10px;color:%23A3ACB8;margin-top:4px}.otk-divider{height:1px;background:%23e2e5ea;margin:16px 0}.otk-info{background:%23f8f9fa;border-radius:8px;padding:12px;margin-bottom:14px;border:1px solid %23e2e5ea}.otk-info-t{font-size:10px;font-weight:700;color:%233F4755;margin-bottom:4px;text-transform:uppercase}.otk-info-v{font-size:13px;color:%23272D6D;font-weight:500;word-break:break-all}.otk-toast{position:absolute;top:60px;left:50%25;transform:translateX(-50%25);background:%2300A1FF;color:%23fff;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;z-index:10}.otk-token{font-family:monospace;font-size:11px;color:%233F4755;background:%23e2e5ea;padding:6px 10px;border-radius:6px;margin-top:6px}.otk-row{display:flex;gap:8px}.otk-row .otk-btn{flex:1}.otk-data-row{display:flex;gap:8px;margin-bottom:8px}.otk-data-row .otk-btn{flex:1;padding:10px;font-size:11px}`;document.head.appendChild(s);var m=window.location.pathname.match(/\/dashboards\/([a-zA-Z0-9-]+)/);var did=m?m[1]:null;var base=window.location.origin;var token=localStorage.getItem('omni_toolkit_token')||'';var models=JSON.parse(localStorage.getItem('omni_toolkit_models')||'[]');var folders=JSON.parse(localStorage.getItem('omni_toolkit_folders')||'[]');var loading={models:false,folders:false};function hasToken(){return token.length>0}var o=document.createElement('div');o.className='otk-overlay';function tabs(){var l=!hasToken();return '<button class=%22'+(l?'active':'auth')+'%22 data-p=%22token%22>🔑 Token'+(l?'':' ✓')+'</button><button class=%22'+(l?'locked':'')+'%22 data-p=%22migrate%22 '+(l?'disabled':'')+'>🚀 Migrate'+(l?' 🔒':'')+'</button><button class=%22'+(l?'locked':'')+'%22 data-p=%22smart%22 '+(l?'disabled':'')+'>⚡ Smart'+(l?' 🔒':'')+'</button><button class=%22'+(l?'locked':'')+'%22 data-p=%22data%22 '+(l?'disabled':'')+'>📂 Data'+(l?' 🔒':'')+'</button>'}function folderOpts(){return '<option value=%22%22>-- Root --</option>'+folders.map(function(f){return '<option value=%22'+(f.path||f.name)+'%22>'+(f.path||f.name)+'</option>'}).join('')}function modelOpts(){return models.map(function(m){return '<option value=%22'+m.id+'%22>'+m.name+' ('+m.id+')</option>'}).join('')}function tokBtns(){return hasToken()?'<div class=%22otk-row%22><button class=%22otk-btn otk-btn-p%22 id=%22save-tok%22>🔄 Update</button><button class=%22otk-btn otk-btn-d%22 id=%22clear-tok%22>🗑️ Clear</button></div>':'<button class=%22otk-btn otk-btn-p%22 id=%22save-tok%22>💾 Save Token</button>'}function tokMask(){return token?'••••••'+token.slice(-4):'No token'}function render(){o.innerHTML='<div class=%22otk-modal%22><div class=%22otk-header%22><h2>🧰 Omni Toolkit</h2><button class=%22otk-close%22>×</button></div><div class=%22otk-body%22><nav class=%22otk-nav%22>'+tabs()+'</nav><div id=%22p-token%22 class=%22otk-panel active%22><div class=%22otk-status%22 id=%22s-token%22></div><div class=%22otk-group%22><label class=%22otk-label%22>API Token</label><input type=%22password%22 class=%22otk-input%22 id=%22tok-in%22 placeholder=%22Paste your Omni API token%22 value=%22'+token+'%22><p class=%22otk-help%22>Stored locally in browser</p></div><div id=%22tok-btns%22>'+tokBtns()+'</div>'+(token?'<div class=%22otk-token%22>Saved: '+tokMask()+'</div>':'')+'</div><div id=%22p-migrate%22 class=%22otk-panel%22>'+(did?'<div class=%22otk-info%22><div class=%22otk-info-t%22>Dashboard</div><div class=%22otk-info-v%22>'+did+'</div></div>':'<div class=%22otk-status visible warning%22>⚠️ Navigate to a dashboard</div>')+'<div class=%22otk-status%22 id=%22s-migrate%22></div><div class=%22otk-group%22><label class=%22otk-label%22>Target Model</label><input type=%22text%22 class=%22otk-input%22 id=%22mig-model%22 placeholder=%22Model ID%22 list=%22dl-models%22><datalist id=%22dl-models%22>'+modelOpts()+'</datalist></div><div class=%22otk-group%22><label class=%22otk-label%22>Folder</label><select class=%22otk-select%22 id=%22mig-folder%22>'+folderOpts()+'</select></div><button class=%22otk-btn otk-btn-p%22 id=%22mig-btn%22 '+(did?'':'disabled')+'>🚀 Migrate</button></div><div id=%22p-smart%22 class=%22otk-panel%22>'+(did?'<div class=%22otk-info%22><div class=%22otk-info-t%22>Dashboard</div><div class=%22otk-info-v%22>'+did+'</div></div>':'<div class=%22otk-status visible warning%22>⚠️ Navigate to a dashboard</div>')+'<div class=%22otk-status%22 id=%22s-smart%22></div><div class=%22otk-group%22><label class=%22otk-label%22>Target Model</label><input type=%22text%22 class=%22otk-input%22 id=%22smt-model%22 placeholder=%22Model ID%22 list=%22dl-models2%22><datalist id=%22dl-models2%22>'+modelOpts()+'</datalist></div><div class=%22otk-group%22><label class=%22otk-label%22>New Slug</label><input type=%22text%22 class=%22otk-input%22 id=%22smt-slug%22 placeholder=%22e.g., sales-dash%22><p class=%22otk-help%22>Leave blank for auto</p></div><div class=%22otk-group%22><label class=%22otk-label%22>Folder</label><select class=%22otk-select%22 id=%22smt-folder%22>'+folderOpts()+'</select></div><button class=%22otk-btn otk-btn-p%22 id=%22smt-btn%22 '+(did?'':'disabled')+'>⚡ Smart Migrate</button></div><div id=%22p-data%22 class=%22otk-panel%22><div class=%22otk-status%22 id=%22s-data%22></div><div class=%22otk-data-row%22><button class=%22otk-btn otk-btn-s%22 id=%22load-models%22>📂 Load Models</button><button class=%22otk-btn otk-btn-s%22 id=%22load-folders%22>📁 Load Folders</button></div><div class=%22otk-data-row%22><button class=%22otk-btn otk-btn-d%22 id=%22clear-models%22 style=%22font-size:10px;padding:8px%22>🗑️ Clear Models</button><button class=%22otk-btn otk-btn-d%22 id=%22clear-folders%22 style=%22font-size:10px;padding:8px%22>🗑️ Clear Folders</button></div><div class=%22otk-divider%22></div><div class=%22otk-info%22><div class=%22otk-info-t%22>Cached Data</div><div style=%22font-size:12px;color:%233F4755%22>'+models.length+' models · '+folders.length+' folders</div></div></div></div></div>';bindAll()}function status(id,msg,type){var el=o.querySelector('%23'+id);if(el){el.className='otk-status visible '+type;el.innerHTML=type==='loading'?'<span class=%22otk-spinner%22></span>'+msg:msg}}function toast(msg){var t=document.createElement('div');t.className='otk-toast';t.textContent=msg;o.querySelector('.otk-modal').appendChild(t);setTimeout(function(){t.remove()},2500)}function hdr(){return{'Authorization':'Bearer '+token,'Content-Type':'application/json'}}function switchTab(tab){o.querySelectorAll('.otk-nav button').forEach(function(b){b.classList.remove('active');if(b.dataset.p==='token'%26%26hasToken())b.classList.add('auth')});var btn=o.querySelector('.otk-nav button[data-p=%22'+tab+'%22]');if(btn){btn.classList.remove('auth');btn.classList.add('active')}o.querySelectorAll('.otk-panel').forEach(function(p){p.classList.remove('active')});var pnl=o.querySelector('%23p-'+tab);if(pnl)pnl.classList.add('active')}function bindAll(){o.querySelector('.otk-close').onclick=function(){o.remove()};o.onclick=function(e){if(e.target===o)o.remove()};o.querySelectorAll('.otk-nav button:not(.locked)').forEach(function(btn){btn.onclick=function(){switchTab(btn.dataset.p)}});var sBtn=o.querySelector('%23save-tok');if(sBtn)sBtn.onclick=function(){var t=o.querySelector('%23tok-in').value.trim();if(!t){status('s-token','Enter a token','error');return}token=t;localStorage.setItem('omni_toolkit_token',t);status('s-token','✅ Saved!','success');toast('✅ Token saved');setTimeout(function(){location.reload()},400)};var cBtn=o.querySelector('%23clear-tok');if(cBtn)cBtn.onclick=function(){token='';localStorage.removeItem('omni_toolkit_token');status('s-token','🗑️ Cleared','warning');toast('🗑️ Cleared');setTimeout(function(){location.reload()},400)};var migBtn=o.querySelector('%23mig-btn');if(migBtn)migBtn.onclick=async function(){var modelId=o.querySelector('%23mig-model').value.trim();var folderPath=o.querySelector('%23mig-folder').value;if(!modelId){status('s-migrate','Enter model ID','error');return}try{status('s-migrate','Exporting...','loading');var expRes=await fetch(base+'/api/unstable/documents/'+did+'/export',{headers:hdr()});if(!expRes.ok)throw new Error('Export failed');var data=await expRes.json();status('s-migrate','Importing...','loading');var impRes=await fetch(base+'/api/unstable/documents/import',{method:'POST',headers:hdr(),body:JSON.stringify(Object.assign({},data,{baseModelId:modelId}))});if(!impRes.ok)throw new Error('Import failed');var result=await impRes.json();var newId=result.workbook%26%26result.workbook.identifier||'unknown';if(folderPath){status('s-migrate','Moving...','loading');await fetch(base+'/api/v1/documents/'+newId+'/move',{method:'PUT',headers:hdr(),body:JSON.stringify({folderPath:folderPath})})}status('s-migrate','✅ Done!<br><a href=%22'+base+'/dashboards/'+newId+'%22 target=%22_blank%22 class=%22otk-link%22>Open →</a>','success')}catch(e){status('s-migrate','❌ '+e.message,'error')}};var smtBtn=o.querySelector('%23smt-btn');if(smtBtn)smtBtn.onclick=async function(){var modelId=o.querySelector('%23smt-model').value.trim();var newSlug=o.querySelector('%23smt-slug').value.trim();var folderPath=o.querySelector('%23smt-folder').value;if(!modelId){status('s-smart','Enter model ID','error');return}try{status('s-smart','Exporting...','loading');var expRes=await fetch(base+'/api/unstable/documents/'+did+'/export',{headers:hdr()});if(!expRes.ok)throw new Error('Export failed');var data=await expRes.json();var title=data.document%26%26data.document.name||'Dashboard';status('s-smart','Archiving original...','loading');var renRes=await fetch(base+'/api/v1/documents/'+did,{method:'PATCH',headers:hdr(),body:JSON.stringify({name:'OLD - '+title,clearExistingDraft:true})});if(!renRes.ok)throw new Error('Archive failed');status('s-smart','Importing...','loading');var impBody=Object.assign({},data,{baseModelId:modelId});if(newSlug)impBody.identifier=newSlug;var impRes=await fetch(base+'/api/unstable/documents/import',{method:'POST',headers:hdr(),body:JSON.stringify(impBody)});if(!impRes.ok)throw new Error('Import failed');var result=await impRes.json();var newId=result.workbook%26%26result.workbook.identifier||newSlug||'unknown';if(folderPath){status('s-smart','Moving...','loading');await fetch(base+'/api/v1/documents/'+newId+'/move',{method:'PUT',headers:hdr(),body:JSON.stringify({folderPath:folderPath})})}status('s-smart','✅ Done!<br>📝 Original renamed: %22OLD - '+title+'%22<br>🆕 New: <a href=%22'+base+'/dashboards/'+newId+'%22 target=%22_blank%22 style=%22color:%2300A1FF%22>/dashboards/'+newId+'</a><br><a href=%22'+base+'/dashboards/'+newId+'%22 target=%22_blank%22 class=%22otk-link%22>Open New →</a>','success')}catch(e){status('s-smart','❌ '+e.message,'error')}};var ldmBtn=o.querySelector('%23load-models');if(ldmBtn)ldmBtn.onclick=async function(){if(loading.models)return;loading.models=true;ldmBtn.disabled=true;status('s-data','Loading shared models...','loading');try{var res=await fetch(base+'/api/v1/models?modelKind=SHARED',{headers:hdr()});if(!res.ok)throw new Error('Failed');var data=await res.json();models=(data.records||[]).map(function(m){return{id:m.id,name:m.name}});localStorage.setItem('omni_toolkit_models',JSON.stringify(models));status('s-data','✅ '+models.length+' shared models','success');render();switchTab('data')}catch(e){status('s-data','❌ '+e.message,'error')}finally{loading.models=false}};var ldfBtn=o.querySelector('%23load-folders');if(ldfBtn)ldfBtn.onclick=async function(){if(loading.folders)return;loading.folders=true;ldfBtn.disabled=true;status('s-data','Loading folders...','loading');try{var res=await fetch(base+'/api/v1/folders',{headers:hdr()});if(!res.ok)throw new Error('Failed');var data=await res.json();folders=(data.records||[]).map(function(f){return{id:f.id,name:f.name,path:f.path}});localStorage.setItem('omni_toolkit_folders',JSON.stringify(folders));status('s-data','✅ '+folders.length+' folders','success');render();switchTab('data')}catch(e){status('s-data','❌ '+e.message,'error')}finally{loading.folders=false}};var clmBtn=o.querySelector('%23clear-models');if(clmBtn)clmBtn.onclick=function(){models=[];localStorage.removeItem('omni_toolkit_models');toast('🗑️ Models cleared');render();switchTab('data')};var clfBtn=o.querySelector('%23clear-folders');if(clfBtn)clfBtn.onclick=function(){folders=[];localStorage.removeItem('omni_toolkit_folders');toast('🗑️ Folders cleared');render();switchTab('data')}}document.body.appendChild(o);render()})();">
+                    🧰 Omni Toolkit v2.0
+                </a>
+            </div>
+
+            <div class="alt-method">
+                <div class="alt-method-header">
+                    <span>Or copy the code manually</span>
+                    <button class="copy-btn" id="copyBtn" onclick="copyCode()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy Code
+                    </button>
+                </div>
+                <div class="code-preview" id="codePreview">javascript:(function(){const s=document.createElement('style');s.textContent=`@keyframes omniSpin{0%{transform:rotate(0deg)}...</div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h3>What's Included</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔑</div>
+                    <h4>Token Management</h4>
+                    <p>Securely store your Omni API token locally in your browser</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h4>Quick Migrate</h4>
+                    <p>Export and import dashboards to a new model with one click</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Smart Migrate</h4>
+                    <p>Archive original with "OLD -" prefix, import fresh, and organize into folders</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📂</div>
+                    <h4>Data Caching</h4>
+                    <p>Load and cache shared models and folders for quick selection</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="instructions">
+            <h3>How to Install</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4>Show your bookmarks bar</h4>
+                        <p>Press <code>Ctrl+Shift+B</code> (Windows) or <code>Cmd+Shift+B</code> (Mac) to show the bookmarks bar in Chrome</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4>Drag the button</h4>
+                        <p>Drag the pink "🧰 Omni Toolkit v2.0" button above to your bookmarks bar</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4>Navigate to a dashboard</h4>
+                        <p>Go to any Omni dashboard page at <code>/dashboards/your-slug</code></p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h4>Click the bookmarklet</h4>
+                        <p>Click "Omni Toolkit" in your bookmarks bar to open the migration panel</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Built for <a href="https://omni.co" target="_blank">Omni Analytics</a> • Version 2.0</p>
+    </footer>
+
+    <div class="toast" id="toast">✅ Copied to clipboard!</div>
+
+    <script>
+        const fullCode = `javascript:(function(){const s=document.createElement('style');s.textContent=\`@keyframes omniSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.otk-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(39,45,109,0.9);z-index:999999;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;backdrop-filter:blur(4px)}.otk-modal{background:#fff;border-radius:16px;width:90%;max-width:520px;color:#272D6D;box-shadow:0 25px 80px rgba(0,0,0,0.4);max-height:90vh;overflow:hidden;display:flex;flex-direction:column}.otk-header{padding:18px 22px;background:#272D6D;display:flex;justify-content:space-between;align-items:center}.otk-header h2{margin:0;font-size:17px;font-weight:700;color:#fff}.otk-close{background:none;border:none;color:rgba(255,255,255,0.7);font-size:26px;cursor:pointer}.otk-close:hover{color:#fff}.otk-body{padding:18px 22px;overflow-y:auto;flex:1}.otk-nav{display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap}.otk-nav button{padding:9px 12px;border-radius:8px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:#f0f2f5;color:#3F4755;transition:all 0.2s}.otk-nav button:hover:not(.locked):not(.active){background:#e2e5ea}.otk-nav button.active{background:#FF5789;color:#fff}.otk-nav button.locked{background:#3F4755;color:#A3ACB8;cursor:not-allowed;opacity:0.7}.otk-nav button.auth{background:#00A1FF;color:#fff}.otk-panel{display:none}.otk-panel.active{display:block}.otk-label{display:block;color:#3F4755;font-size:12px;font-weight:600;margin-bottom:6px}.otk-input,.otk-select{width:100%;padding:10px 12px;border-radius:8px;border:2px solid #e2e5ea;background:#f8f9fa;color:#272D6D;font-size:13px;box-sizing:border-box}.otk-input:focus,.otk-select:focus{outline:none;border-color:#FF5789}.otk-input:disabled,.otk-select:disabled{background:#e2e5ea;color:#3F4755}.otk-group{margin-bottom:14px}.otk-btn{width:100%;padding:12px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;box-sizing:border-box}.otk-btn-p{background:#FF5789;color:#fff}.otk-btn-p:hover:not(:disabled){background:#AA3F6B}.otk-btn-p:disabled,.otk-btn-s:disabled{background:#3F4755;color:#A3ACB8;cursor:not-allowed;opacity:0.6}.otk-btn-d{background:#fff0f3;color:#AA3F6B;border:1px solid #AA3F6B}.otk-btn-d:hover{background:#AA3F6B;color:#fff}.otk-btn-s{background:#f0f2f5;color:#3F4755;border:1px solid #e2e5ea}.otk-btn-s:hover:not(:disabled){background:#e2e5ea}.otk-status{padding:10px;border-radius:8px;margin-bottom:14px;font-size:12px;display:none;line-height:1.4}.otk-status.visible{display:block}.otk-status.loading{background:#e6f4ff;border:1px solid #00A1FF;color:#272D6D}.otk-status.success{background:#e6fff4;border:1px solid #00A1FF;color:#272D6D}.otk-status.error{background:#fff0f3;border:1px solid #FF5789;color:#AA3F6B}.otk-status.warning{background:#fffbe6;border:1px solid #E8BF43;color:#272D6D}.otk-spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,161,255,0.3);border-top-color:#00A1FF;border-radius:50%;animation:omniSpin 0.8s linear infinite;margin-right:6px;vertical-align:middle}.otk-link{display:inline-block;background:#00A1FF;color:#fff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:600;font-size:12px;margin-top:8px}.otk-help{font-size:10px;color:#A3ACB8;margin-top:4px}.otk-divider{height:1px;background:#e2e5ea;margin:16px 0}.otk-info{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:14px;border:1px solid #e2e5ea}.otk-info-t{font-size:10px;font-weight:700;color:#3F4755;margin-bottom:4px;text-transform:uppercase}.otk-info-v{font-size:13px;color:#272D6D;font-weight:500;word-break:break-all}.otk-toast{position:absolute;top:60px;left:50%;transform:translateX(-50%);background:#00A1FF;color:#fff;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;z-index:10}.otk-token{font-family:monospace;font-size:11px;color:#3F4755;background:#e2e5ea;padding:6px 10px;border-radius:6px;margin-top:6px}.otk-row{display:flex;gap:8px}.otk-row .otk-btn{flex:1}.otk-data-row{display:flex;gap:8px;margin-bottom:8px}.otk-data-row .otk-btn{flex:1;padding:10px;font-size:11px}\`;document.head.appendChild(s);var m=window.location.pathname.match(/\\/dashboards\\/([a-zA-Z0-9-]+)/);var did=m?m[1]:null;var base=window.location.origin;var token=localStorage.getItem('omni_toolkit_token')||'';var models=JSON.parse(localStorage.getItem('omni_toolkit_models')||'[]');var folders=JSON.parse(localStorage.getItem('omni_toolkit_folders')||'[]');var loading={models:false,folders:false};function hasToken(){return token.length>0}var o=document.createElement('div');o.className='otk-overlay';function tabs(){var l=!hasToken();return '<button class="'+(l?'active':'auth')+'" data-p="token">🔑 Token'+(l?'':' ✓')+'</button><button class="'+(l?'locked':'')+'" data-p="migrate" '+(l?'disabled':'')+'>🚀 Migrate'+(l?' 🔒':'')+'</button><button class="'+(l?'locked':'')+'" data-p="smart" '+(l?'disabled':'')+'>⚡ Smart'+(l?' 🔒':'')+'</button><button class="'+(l?'locked':'')+'" data-p="data" '+(l?'disabled':'')+'>📂 Data'+(l?' 🔒':'')+'</button>'}function folderOpts(){return '<option value="">-- Root --</option>'+folders.map(function(f){return '<option value="'+(f.path||f.name)+'">'+(f.path||f.name)+'</option>'}).join('')}function modelOpts(){return models.map(function(m){return '<option value="'+m.id+'">'+m.name+' ('+m.id+')</option>'}).join('')}function tokBtns(){return hasToken()?'<div class="otk-row"><button class="otk-btn otk-btn-p" id="save-tok">🔄 Update</button><button class="otk-btn otk-btn-d" id="clear-tok">🗑️ Clear</button></div>':'<button class="otk-btn otk-btn-p" id="save-tok">💾 Save Token</button>'}function tokMask(){return token?'••••••'+token.slice(-4):'No token'}function render(){o.innerHTML='<div class="otk-modal"><div class="otk-header"><h2>🧰 Omni Toolkit</h2><button class="otk-close">×</button></div><div class="otk-body"><nav class="otk-nav">'+tabs()+'</nav><div id="p-token" class="otk-panel active"><div class="otk-status" id="s-token"></div><div class="otk-group"><label class="otk-label">API Token</label><input type="password" class="otk-input" id="tok-in" placeholder="Paste your Omni API token" value="'+token+'"><p class="otk-help">Stored locally in browser</p></div><div id="tok-btns">'+tokBtns()+'</div>'+(token?'<div class="otk-token">Saved: '+tokMask()+'</div>':'')+'</div><div id="p-migrate" class="otk-panel">'+(did?'<div class="otk-info"><div class="otk-info-t">Dashboard</div><div class="otk-info-v">'+did+'</div></div>':'<div class="otk-status visible warning">⚠️ Navigate to a dashboard</div>')+'<div class="otk-status" id="s-migrate"></div><div class="otk-group"><label class="otk-label">Target Model</label><input type="text" class="otk-input" id="mig-model" placeholder="Model ID" list="dl-models"><datalist id="dl-models">'+modelOpts()+'</datalist></div><div class="otk-group"><label class="otk-label">Folder</label><select class="otk-select" id="mig-folder">'+folderOpts()+'</select></div><button class="otk-btn otk-btn-p" id="mig-btn" '+(did?'':'disabled')+'>🚀 Migrate</button></div><div id="p-smart" class="otk-panel">'+(did?'<div class="otk-info"><div class="otk-info-t">Dashboard</div><div class="otk-info-v">'+did+'</div></div>':'<div class="otk-status visible warning">⚠️ Navigate to a dashboard</div>')+'<div class="otk-status" id="s-smart"></div><div class="otk-group"><label class="otk-label">Target Model</label><input type="text" class="otk-input" id="smt-model" placeholder="Model ID" list="dl-models2"><datalist id="dl-models2">'+modelOpts()+'</datalist></div><div class="otk-group"><label class="otk-label">New Slug</label><input type="text" class="otk-input" id="smt-slug" placeholder="e.g., sales-dash"><p class="otk-help">Leave blank for auto</p></div><div class="otk-group"><label class="otk-label">Folder</label><select class="otk-select" id="smt-folder">'+folderOpts()+'</select></div><button class="otk-btn otk-btn-p" id="smt-btn" '+(did?'':'disabled')+'>⚡ Smart Migrate</button></div><div id="p-data" class="otk-panel"><div class="otk-status" id="s-data"></div><div class="otk-data-row"><button class="otk-btn otk-btn-s" id="load-models">📂 Load Models</button><button class="otk-btn otk-btn-s" id="load-folders">📁 Load Folders</button></div><div class="otk-data-row"><button class="otk-btn otk-btn-d" id="clear-models" style="font-size:10px;padding:8px">🗑️ Clear Models</button><button class="otk-btn otk-btn-d" id="clear-folders" style="font-size:10px;padding:8px">🗑️ Clear Folders</button></div><div class="otk-divider"></div><div class="otk-info"><div class="otk-info-t">Cached Data</div><div style="font-size:12px;color:#3F4755">'+models.length+' models · '+folders.length+' folders</div></div></div></div></div>';bindAll()}function status(id,msg,type){var el=o.querySelector('#'+id);if(el){el.className='otk-status visible '+type;el.innerHTML=type==='loading'?'<span class="otk-spinner"></span>'+msg:msg}}function toast(msg){var t=document.createElement('div');t.className='otk-toast';t.textContent=msg;o.querySelector('.otk-modal').appendChild(t);setTimeout(function(){t.remove()},2500)}function hdr(){return{'Authorization':'Bearer '+token,'Content-Type':'application/json'}}function switchTab(tab){o.querySelectorAll('.otk-nav button').forEach(function(b){b.classList.remove('active');if(b.dataset.p==='token'&&hasToken())b.classList.add('auth')});var btn=o.querySelector('.otk-nav button[data-p="'+tab+'"]');if(btn){btn.classList.remove('auth');btn.classList.add('active')}o.querySelectorAll('.otk-panel').forEach(function(p){p.classList.remove('active')});var pnl=o.querySelector('#p-'+tab);if(pnl)pnl.classList.add('active')}function bindAll(){o.querySelector('.otk-close').onclick=function(){o.remove()};o.onclick=function(e){if(e.target===o)o.remove()};o.querySelectorAll('.otk-nav button:not(.locked)').forEach(function(btn){btn.onclick=function(){switchTab(btn.dataset.p)}});var sBtn=o.querySelector('#save-tok');if(sBtn)sBtn.onclick=function(){var t=o.querySelector('#tok-in').value.trim();if(!t){status('s-token','Enter a token','error');return}token=t;localStorage.setItem('omni_toolkit_token',t);status('s-token','✅ Saved!','success');toast('✅ Token saved');setTimeout(function(){location.reload()},400)};var cBtn=o.querySelector('#clear-tok');if(cBtn)cBtn.onclick=function(){token='';localStorage.removeItem('omni_toolkit_token');status('s-token','🗑️ Cleared','warning');toast('🗑️ Cleared');setTimeout(function(){location.reload()},400)};var migBtn=o.querySelector('#mig-btn');if(migBtn)migBtn.onclick=async function(){var modelId=o.querySelector('#mig-model').value.trim();var folderPath=o.querySelector('#mig-folder').value;if(!modelId){status('s-migrate','Enter model ID','error');return}try{status('s-migrate','Exporting...','loading');var expRes=await fetch(base+'/api/unstable/documents/'+did+'/export',{headers:hdr()});if(!expRes.ok)throw new Error('Export failed');var data=await expRes.json();status('s-migrate','Importing...','loading');var impRes=await fetch(base+'/api/unstable/documents/import',{method:'POST',headers:hdr(),body:JSON.stringify(Object.assign({},data,{baseModelId:modelId}))});if(!impRes.ok)throw new Error('Import failed');var result=await impRes.json();var newId=result.workbook&&result.workbook.identifier||'unknown';if(folderPath){status('s-migrate','Moving...','loading');await fetch(base+'/api/v1/documents/'+newId+'/move',{method:'PUT',headers:hdr(),body:JSON.stringify({folderPath:folderPath})})}status('s-migrate','✅ Done!<br><a href="'+base+'/dashboards/'+newId+'" target="_blank" class="otk-link">Open →</a>','success')}catch(e){status('s-migrate','❌ '+e.message,'error')}};var smtBtn=o.querySelector('#smt-btn');if(smtBtn)smtBtn.onclick=async function(){var modelId=o.querySelector('#smt-model').value.trim();var newSlug=o.querySelector('#smt-slug').value.trim();var folderPath=o.querySelector('#smt-folder').value;if(!modelId){status('s-smart','Enter model ID','error');return}try{status('s-smart','Exporting...','loading');var expRes=await fetch(base+'/api/unstable/documents/'+did+'/export',{headers:hdr()});if(!expRes.ok)throw new Error('Export failed');var data=await expRes.json();var title=data.document&&data.document.name||'Dashboard';status('s-smart','Archiving original...','loading');var renRes=await fetch(base+'/api/v1/documents/'+did,{method:'PATCH',headers:hdr(),body:JSON.stringify({name:'OLD - '+title,clearExistingDraft:true})});if(!renRes.ok)throw new Error('Archive failed');status('s-smart','Importing...','loading');var impBody=Object.assign({},data,{baseModelId:modelId});if(newSlug)impBody.identifier=newSlug;var impRes=await fetch(base+'/api/unstable/documents/import',{method:'POST',headers:hdr(),body:JSON.stringify(impBody)});if(!impRes.ok)throw new Error('Import failed');var result=await impRes.json();var newId=result.workbook&&result.workbook.identifier||newSlug||'unknown';if(folderPath){status('s-smart','Moving...','loading');await fetch(base+'/api/v1/documents/'+newId+'/move',{method:'PUT',headers:hdr(),body:JSON.stringify({folderPath:folderPath})})}status('s-smart','✅ Done!<br>📝 Original renamed: "OLD - '+title+'"<br>🆕 New: <a href="'+base+'/dashboards/'+newId+'" target="_blank" style="color:#00A1FF">/dashboards/'+newId+'</a><br><a href="'+base+'/dashboards/'+newId+'" target="_blank" class="otk-link">Open New →</a>','success')}catch(e){status('s-smart','❌ '+e.message,'error')}};var ldmBtn=o.querySelector('#load-models');if(ldmBtn)ldmBtn.onclick=async function(){if(loading.models)return;loading.models=true;ldmBtn.disabled=true;status('s-data','Loading shared models...','loading');try{var res=await fetch(base+'/api/v1/models?modelKind=SHARED',{headers:hdr()});if(!res.ok)throw new Error('Failed');var data=await res.json();models=(data.records||[]).map(function(m){return{id:m.id,name:m.name}});localStorage.setItem('omni_toolkit_models',JSON.stringify(models));status('s-data','✅ '+models.length+' shared models','success');render();switchTab('data')}catch(e){status('s-data','❌ '+e.message,'error')}finally{loading.models=false}};var ldfBtn=o.querySelector('#load-folders');if(ldfBtn)ldfBtn.onclick=async function(){if(loading.folders)return;loading.folders=true;ldfBtn.disabled=true;status('s-data','Loading folders...','loading');try{var res=await fetch(base+'/api/v1/folders',{headers:hdr()});if(!res.ok)throw new Error('Failed');var data=await res.json();folders=(data.records||[]).map(function(f){return{id:f.id,name:f.name,path:f.path}});localStorage.setItem('omni_toolkit_folders',JSON.stringify(folders));status('s-data','✅ '+folders.length+' folders','success');render();switchTab('data')}catch(e){status('s-data','❌ '+e.message,'error')}finally{loading.folders=false}};var clmBtn=o.querySelector('#clear-models');if(clmBtn)clmBtn.onclick=function(){models=[];localStorage.removeItem('omni_toolkit_models');toast('🗑️ Models cleared');render();switchTab('data')};var clfBtn=o.querySelector('#clear-folders');if(clfBtn)clfBtn.onclick=function(){folders=[];localStorage.removeItem('omni_toolkit_folders');toast('🗑️ Folders cleared');render();switchTab('data')}}document.body.appendChild(o);render()})();`;
+
+        function copyCode() {
+            navigator.clipboard.writeText(fullCode).then(function() {
+                const btn = document.getElementById('copyBtn');
+                const toast = document.getElementById('toast');
+                
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
+                btn.classList.add('copied');
+                
+                toast.classList.add('show');
+                
+                setTimeout(function() {
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Code';
+                    btn.classList.remove('copied');
+                    toast.classList.remove('show');
+                }, 2500);
+            });
+        }
+    </script>
+</body>
+</html>
