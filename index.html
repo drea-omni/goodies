@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Omni Docs AI">
+    <meta name="theme-color" content="#667eea">
+    
+    <title>Omni Docs AI</title>
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea'/><stop offset='100%' style='stop-color:%23764ba2'/></linearGradient></defs><rect width='180' height='180' fill='url(%23grad)'/><text x='90' y='110' font-family='Arial' font-size='80' font-weight='bold' text-anchor='middle' fill='white'>O</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .launch-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1.25rem 3rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .launch-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .quick-links {
+            margin-top: 2.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .quick-link {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quick-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .quick-link-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .quick-link-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .quick-link-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-link-desc {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .install-hint {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .install-hint-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .install-steps {
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .install-steps li {
+            margin: 0.5rem 0;
+        }
+
+        .arrow {
+            display: inline-block;
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .launch-btn:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+                font-size: 3.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        .auto-redirect {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .countdown {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulsing {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">O</div>
+        <h1>Omni Docs AI</h1>
+        <p class="subtitle">Your intelligent documentation assistant, ready to help you explore Omni's powerful features.</p>
+        
+        <button class="launch-btn" id="launchBtn">
+            Launch Docs AI <span class="arrow">→</span>
+        </button>
+
+        <div class="quick-links">
+            <a href="https://docs.omni.co" class="quick-link" target="_blank">
+                <div class="quick-link-icon">📚</div>
+                <div class="quick-link-content">
+                    <div class="quick-link-title">Browse Docs</div>
+                    <div class="quick-link-desc">Explore all documentation</div>
+                </div>
+            </a>
+
+            <a href="https://docs.omni.co/docs/getting-started/introduction" class="quick-link" target="_blank">
+                <div class="quick-link-icon">🚀</div>
+                <div class="quick-link-content">
+                    <div class="quick-link-title">Getting Started</div>
+                    <div class="quick-link-desc">New to Omni? Start here</div>
+                </div>
+            </a>
+
+            <a href="https://docs.omni.co/docs/reference/overview" class="quick-link" target="_blank">
+                <div class="quick-link-icon">📖</div>
+                <div class="quick-link-content">
+                    <div class="quick-link-title">API Reference</div>
+                    <div class="quick-link-desc">Technical documentation</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="install-hint">
+            <div class="install-hint-title">
+                <span>📱</span>
+                <span>Install This App</span>
+            </div>
+            <ol class="install-steps">
+                <li>Tap the <strong>Share</strong> button in Safari</li>
+                <li>Scroll and select <strong>"Add to Home Screen"</strong></li>
+                <li>Tap <strong>"Add"</strong> in the top right</li>
+                <li>Launch anytime from your home screen!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const launchBtn = document.getElementById('launchBtn');
+        const targetUrl = 'https://docs.omni.co';
+
+        launchBtn.addEventListener('click', () => {
+            window.location.href = targetUrl;
+        });
+
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                            window.navigator.standalone || 
+                            document.referrer.includes('android-app://');
+
+        if (isStandalone) {
+            let countdown = 3;
+            const autoRedirect = document.createElement('div');
+            autoRedirect.className = 'auto-redirect';
+            autoRedirect.innerHTML = `
+                <div class="pulsing">Launching in <span class="countdown">${countdown}</span> seconds...</div>
+            `;
+            document.querySelector('.container').appendChild(autoRedirect);
+
+            const countdownEl = autoRedirect.querySelector('.countdown');
+            
+            const timer = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    window.location.href = targetUrl;
+                }
+            }, 1000);
+
+            launchBtn.addEventListener('click', () => {
+                clearInterval(timer);
+            });
+        }
+
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: false });
+
+        document.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const touchDiff = touchY - touchStartY;
+            
+            if (touchDiff > 0 && window.scrollY === 0) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        console.log('Running as installed app:', isStandalone);
+    </script>
+</body>
+</html>
